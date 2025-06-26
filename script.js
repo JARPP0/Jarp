@@ -1,6 +1,3 @@
-class Pessoa {
-    
-}
 let set = [
 ["Rodobelo", 2, "Gato mascote da escola"]
 , ["Rodobelo : CATciquismo KATkos-(Líder TriMAW)", 2468, "Dono de uma tribo indígena"]
