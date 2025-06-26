@@ -206,7 +206,7 @@ document.getElementById(`btn`).addEventListener(`click`, ()=>{
         // DECLARAÇÃO
         LuckAcc = 1
         speed = 1
-        LuckAcc += (shopvarE[0]) ? 1: 10;
+        LuckAcc += (shopvarE[0]) ? 1: 0;
         speed += (shopvarE[1]) ? 1.5: 0;
         let luck = LuckAcc;
         let Deflist = roll(set, luck)
