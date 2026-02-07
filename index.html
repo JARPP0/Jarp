@@ -1,156 +1,479 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RNG do Marcão</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Document</title>
+    <link rel="stylesheet" href="./style.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <style>
+        /* GERAL */
+
+        body, html{
+            margin: 0;
+            background-color: hsl(0, 0%, 100%);
+            user-select: none;
+            height: 100dvh;
+            scrollbar-color: red;
+            overflow: hidden;
+        }
+
+        /* HEADER */
+
+        header{
+            font-family: Georgia, 'Times New Roman', Times, serif;
+            background: rgb(218, 255, 220);
+            text-shadow: 0 0 10px rgb(73, 175, 131);
+            box-shadow: inset 0 -10px 10px rgb(187, 255, 198);
+            height: 140px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 30px;
+        }
+
+        .header{
+            display: flex;
+            position: relative;
+            flex-direction: column;
+        }
+
+        /* NAV */
+
+        .cont{
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2px;
+            transform: translateY(2px);
+            background-color: hsl(31, 12%, 37%);
+            padding: 3px 0px;
+        }
+        .cont a{
+            font-weight: bold;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            text-align: center;
+            color: rgb(155, 112, 85);
+            border: 2px solid rgb(221, 184, 135);
+            border-bottom: 2px solid rgb(255, 255, 255);
+            text-decoration: none;
+            transition: background .1s ease-in-out;
+
+            &:hover{
+                background: hsl(27, 100%, 86%);
+                cursor: pointer;
+            }
+            &:active{
+                background: hsl(43, 100%, 93%);
+                cursor: pointer;
+            }
+        }
+        .nav{
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+        .nav-line{
+            border: 1px solid rgb(80, 195, 145);
+            transform: translateY(-2px);
+            width: 100vw;
+        }
+
+        .nav-line-triangle{
+            left: calc(12.5% - 98px);
+            transform: scale(.1);
+            top: -37px;
+            position: absolute;
+        }
+
+        /* CARDS */
+
+        .card-list::-webkit-scrollbar{
+            width: 15px;
+            background-color: rgb(140, 198, 154);
+            box-shadow: 0 0 10px rgba(57, 76, 53, 0.773);
+            border: 3px solid white;
+            border-radius: 10px;
+        }
+        .card-list::-webkit-scrollbar-thumb{
+            background-color: rgb(176, 235, 174);
+            border-radius: 10px;
+        }
+        .card-list::-webkit-scrollbar-thumb:hover{
+            background-color: rgb(184, 255, 222);
+        }
+
+        .unselected{
+            background: hsl(27, 100%, 80%);
+        }
+        .selected{
+            background: hsl(27, 100%, 87%);
+        }
+        .card-list{
+            scale: .99;
+            display: grid;
+            overflow-y: auto;
+            overflow-x: hidden;
+            height: 100%;
+            & *{
+                transform: translateY(10px);
+            }
+        }
+        .card{
+            transition: transform 0.1s ease-in-out;
+            &:hover{
+                transform: translateY(2px);
+            }
+        }
+        .card div:nth-child(4){
+            transform: translateY(-50px);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-weight: 500;
+        }
+        .card-column{
+            width: calc(25vw);
+            height: 200px;
+        }
+        .imagem{
+            width: 25vw;
+            border: 3px solid rgb(89, 163, 116);
+            transform: translate(-5px, -13px);
+            transition: border 0.3s ease-out, transform .2s ease-in-out;
+            box-shadow: 4px 4px 2px rgba(0, 0, 0, 0.426);
+            margin-bottom: 0px;
+            &:hover{
+                border: 3px solid rgb(104, 188, 105);
+                & + div{
+                    background: rgb(89, 163, 116);
+                }
+            }
+        }
+        .imagem{
+            &:active{
+                border: 3px solid rgb(81, 202, 148);
+                & + div{
+                    background: rgb(81, 202, 148);
+                }
+            }
+        }
+
+        .info-area{
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-weight: 500;
+            background: linear-gradient(12deg, rgb(43, 160, 127, .8), rgb(48, 164, 61, .8));
+            color: rgb(221, 255, 194);
+            padding: 0px 5px;
+            height: 40px;
+            display: grid;
+            grid-template-columns: 1.6fr 1.5fr 0.5fr;
+            transform: translate(-2px, -57px);
+            transition: transform .2s ease-in-out;
+            & div:nth-child(1){
+                grid-template-rows: 20px 20px;
+                transform: translate(0px, 1px);
+                & div:nth-child(2){
+                    transform: translateY(-2px);
+                    font-size: 13px;
+                }
+            }
+            
+        }
+        .info-svg{
+            position: absolute;
+            transform: scale(.1) translate(calc(250vw - 1710px), -2160px);
+            & *{
+                transform: translateY(2px);
+                fill: rgb(245, 255, 212);
+            }
+        }
+        /* DISPLAY */
+
+        .display{
+            position: absolute;
+            z-index: 3;
+            background: rgba(112, 152, 107, 0.192);
+            backdrop-filter: brightness(40%) blur(10px);
+            box-shadow: 0 0 30px -4px black;
+            padding: 20px 10px;
+            width: 33vw;
+            border-radius: 10px;
+            height: calc(100dvh - 200px);
+            transform: translateX(66vw);
+            color: white;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        /* DECO-SVGS */
+
+        .svg{
+            fill: rgb(254, 223, 162);
+        }
+
+        .leaf{
+            transform-origin: 45px 0px;
+            position: absolute
+        }
+        .plant{
+            position: absolute;
+            align-self: start;
+            transform: translateX(-9px) scale(.3);
+        }
+        .flower1{
+            position: absolute;
+            align-self: end;
+            transform: translate(230px, -215px) scale(.15);
+        }
+
+        /* MEDIAS */
+
+        @media (min-width: 900px){
+            .card-list{
+                grid-template-columns: 1fr 1fr 1fr 1fr;
+            }
+            .info-area{
+                width: calc(25vw - 35px);
+            }
+            .imagem{
+                width: calc(25vw - 25px);
+            }
+            .info-svg{
+                transform: scale(.1) translate(calc(250vw - 1710px), -2160px);
+            }
+        }
+        @media (max-width: 900px){
+            .card-list{
+                grid-template-columns: 1fr 1fr 1fr;
+            }
+            .info-area{
+                width: calc(33.33vw - 35px);
+            }
+            .imagem{
+                width: calc(33.33vw - 25px);
+            }
+            .info-svg{
+                transform: scale(.1) translate(calc(333.33vw - 1710px), -2160px);
+            }
+        }
+        @media (max-width: 700px){
+            .card-list{
+                grid-template-columns: 1fr 1fr;
+            }
+            .info-area{
+                width: calc(50vw - 35px);
+            }
+            .imagem{
+                width: calc(50vw - 25px);
+            }
+            .info-svg{
+                transform: scale(.1) translate(calc(500vw - 1710px), -2160px);
+            }
+        }
+    </style>
 </head>
 <body>
-    <div class="content">
-        <button id="luck">1</button>
-        <div id="dropdown">Inventário
-            <div id="Listed">
-                <h1 id="list">list</h1>
-            </div>
-        </div>
-        <div class="shop">
-            <div id="shopdropdown"><p>Shop</p>
-                <div class="place" id="place1">
-                    <h1>Pulseira-Gang</h1>
-                    <h4>+1 Luck</h4>
-                    <div>5 - Paulo</div>
-                    <div>5 - Arthur</div>
-                    <div>5 - Pedro</div>
-                    <div>3 - ArthurCorreia</div>
-                    <div>3 - Lucas</div>
-                    <div>1 - Alison</div>
-                    <button id="shop1">Comprar</button><br>
-                </div>
-                <div class="place" id="place2">
-                    <h1>California-Girl</h1>
-                    <h4>+1.5 Speed</h4>
-                    <div>30 - Rodobelo</div>
-                    <div>20 - Marcella</div>
-                    <div>15 - Bia</div>
-                    <div>7 - Rica de Truco</div>
-                    <div>3 - Branca de Neve</div>
-                    <div>1 - Maria</div>
-                    <button id="shop2">Comprar</button><br>
-                </div>
-                <div class="place" id="place3">
-                    <div>a</div>
-                    <button>..</button><br>
-                </div>
-            </div>
-        </div>
+    <div class="header">
+        <header><img src="./logo.png" alt="viveiro vida verde cultural" width="300px"></header>
         <div class="cont">
-            <h1 id="count"></h1>
-            <div id="cooldown-bg"></div>
-            <div id="cooldown-bar"></div><br>
-            <div id="btn">
-                <p>Rolar</p>
-                <div id="circle">
-                    <svg height="1000" width="1000" xmlns="http://www.w3.org/2000/svg">
-                        <clipPath id="brilho">
-                            <circle id="circlin" r="1" cx="25.5" cy="10"/>
-                        </clipPath>
-                    </svg>
-                </div>
-            </div>
-            <h1 id="nome">Nome</h1>
-            <h1 id="chance">Chance</h1>
-            <div id="desc">Description</div>
-            <div id="biome">Bioma: Sala</div>
+            <a href="" onclick="navline(0)" class="selected">Home</a>
+            <a href="" onclick="navline(1)" class="unselected">Nossos produtos</a>
+            <a href="" onclick="navline(2)" class="unselected">Descubra mais</a>
+            <a href="" onclick="navline(3)" class="unselected">Carrinho</a>
         </div>
-    </div>
-    <div class="box-cont">
-        <div id="svg-star-cont">
-            <svg width="100" height="380" viewBox="0 0 330 380" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M162.064 2.98453C162.731 -0.193601 167.269 -0.193592 167.936 2.98454L207.542 191.634C207.933 193.498 206.511 195.25 204.606 195.25H125.394C123.489 195.25 122.067 193.498 122.458 191.634L162.064 2.98453Z" fill="#ACBAFF"/>
-                <path d="M162.064 377.015C162.731 380.194 167.269 380.194 167.936 377.015L207.542 188.366C207.933 186.502 206.511 184.75 204.606 184.75H125.394C123.489 184.75 122.067 186.502 122.458 188.366L162.064 377.015Z" fill="#ACBAFF"/>
-                <path d="M1.64297 101.836C-0.775762 99.6693 1.493 95.7397 4.57897 96.7509L187.757 156.776C189.567 157.369 190.373 159.477 189.421 161.126L149.815 229.726C148.862 231.376 146.634 231.732 145.215 230.461L1.64297 101.836Z" fill="#ACBAFF"/>
-                <path d="M325.5 289.8C328.585 290.812 330.854 286.882 328.436 284.715L184.864 156.091C183.445 154.82 181.216 155.176 180.264 156.825L140.658 225.425C139.705 227.074 140.512 229.183 142.322 229.776L325.5 289.8Z" fill="#ACBAFF"/>
-                <path d="M328.436 101.836C330.854 99.6693 328.585 95.7397 325.5 96.7509L142.322 156.776C140.512 157.369 139.705 159.477 140.658 161.126L180.264 229.726C181.216 231.376 183.445 231.732 184.864 230.461L328.436 101.836Z" fill="#ACBAFF"/>
-                <path d="M4.57896 289.8C1.49299 290.812 -0.775755 286.882 1.64297 284.715L145.215 156.091C146.634 154.82 148.862 155.176 149.815 156.825L189.421 225.425C190.373 227.074 189.567 229.183 187.757 229.776L4.57896 289.8Z" fill="#ACBAFF"/>
+        <div class="plant">
+            <svg class="leaf leaf1" width="79" height="338" viewBox="0 0 79 338" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <ellipse class="svg" cx="39.5" cy="168.95" rx="39.5" ry="101" fill="rgb(1, 1, 1)"/>
+                <path class="svg"d="M30.2386 7.82843C32.5607 -2.60949 47.4393 -2.60948 49.7614 7.82843L73.6653 115.279C75.0548 121.524 70.3024 127.45 63.9039 127.45H16.0961C9.69762 127.45 4.94522 121.524 6.33468 115.279L30.2386 7.82843Z" fill="rgb(1, 1, 1)"/>
+                <path class="svg" d="M49.7614 330.072C47.4393 340.51 32.5607 340.51 30.2386 330.072L6.33469 222.622C4.94523 216.376 9.69763 210.45 16.0961 210.45H63.9039C70.3024 210.45 75.0548 216.376 73.6653 222.622L49.7614 330.072Z" fill="rgb(1, 1, 1)"/>
+            </svg>
+            <svg class="leaf leaf2" width="79" height="338" viewBox="0 0 79 338" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <ellipse class="svg" cx="39.5" cy="168.95" rx="39.5" ry="101" fill="rgb(1, 1, 1)"/>
+                <path class="svg"d="M30.2386 7.82843C32.5607 -2.60949 47.4393 -2.60948 49.7614 7.82843L73.6653 115.279C75.0548 121.524 70.3024 127.45 63.9039 127.45H16.0961C9.69762 127.45 4.94522 121.524 6.33468 115.279L30.2386 7.82843Z" fill="rgb(1, 1, 1)"/>
+                <path class="svg" d="M49.7614 330.072C47.4393 340.51 32.5607 340.51 30.2386 330.072L6.33469 222.622C4.94523 216.376 9.69763 210.45 16.0961 210.45H63.9039C70.3024 210.45 75.0548 216.376 73.6653 222.622L49.7614 330.072Z" fill="rgb(1, 1, 1)"/>
+            </svg>
+            <svg class="leaf leaf3" width="79" height="338" viewBox="0 0 79 338" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <ellipse class="svg" cx="39.5" cy="168.95" rx="39.5" ry="101" fill="rgb(1, 1, 1)"/>
+                <path class="svg"d="M30.2386 7.82843C32.5607 -2.60949 47.4393 -2.60948 49.7614 7.82843L73.6653 115.279C75.0548 121.524 70.3024 127.45 63.9039 127.45H16.0961C9.69762 127.45 4.94522 121.524 6.33468 115.279L30.2386 7.82843Z" fill="rgb(1, 1, 1)"/>
+                <path class="svg" d="M49.7614 330.072C47.4393 340.51 32.5607 340.51 30.2386 330.072L6.33469 222.622C4.94523 216.376 9.69763 210.45 16.0961 210.45H63.9039C70.3024 210.45 75.0548 216.376 73.6653 222.622L49.7614 330.072Z" fill="rgb(1, 1, 1)"/>
             </svg>
         </div>
-        <div id="svg-cont">
-            <svg width="70" height="1001" viewBox="-40 100 360 198" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <g id="box">
-                    <rect id="lowerRect" x="3" y="55" width="255" height="140" rx="9" fill="url(#paint0_linear_0_1)" stroke="url(#paint1_linear_0_1)" stroke-width="13"/>
-                    <rect class="shine" id="lowerRect" x="3" y="55" width="255" height="140" rx="9" fill="url(#gradient1)" stroke="white" stroke-width="13"/>
-
-                    <rect id="upperRect" x="3" y="3" width="255" height="46" rx="9" fill="url(#paint2_linear_0_1)" stroke="url(#paint3_linear_0_1)" stroke-width="13"/>
-                    <rect class="shine" id="upperRect" x="3" y="3" width="255" height="46" rx="9" fill="url(#gradient1)" stroke="white" stroke-width="13"/>
-
-                    <rect id="locker" x="105.5" y="34.5" width="50" height="36" fill="url(#paint4_linear_0_1)" stroke="url(#paint5_linear_0_1)" stroke-width="13"/>
-                    <rect class="shine" id="locker" x="105.5" y="34.5" width="50" height="36" fill="url(#gradient1)" stroke="white" stroke-width="13"/>
-                    
-                </g>
-
+        <div class="flower1">
+            <svg width="560" height="560" viewBox="0 0 560 560" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="140" cy="420" r="140" fill="#FF7373"/>
+                <rect x="140" y="280" width="140" height="140" fill="#FF7373"/>
+                <circle cx="140" cy="140" r="140" transform="matrix(1 0 0 -1 0 280)" fill="#FF7373"/>
+                <rect width="140" height="140" transform="matrix(1 0 0 -1 140 280)" fill="#FF7373"/>
+                <circle cx="140" cy="140" r="140" transform="matrix(-1 0 0 1 560 280)" fill="#FF7373"/>
+                <rect width="140" height="140" transform="matrix(-1 0 0 1 420 280)" fill="#FF7373"/>
+                <circle cx="420" cy="140" r="140" transform="rotate(180 420 140)" fill="#FF7373"/>
+                <rect x="420" y="280" width="140" height="140" transform="rotate(180 420 280)" fill="#FF7373"/>
+                <path d="M280 180L307.009 252.991L380 280L307.009 307.009L280 380L252.991 307.009L180 280L252.991 252.991L280 180Z" fill="url(#paint0_linear_0_1)"/>
+                <circle cx="140" cy="420" r="36" fill="#FF8080"/>
+                <circle cx="420" cy="416" r="36" fill="#FF8080"/>
+                <circle cx="420" cy="140" r="36" fill="#FF8080"/>
+                <circle cx="140" cy="140" r="36" fill="#FF8080"/>
                 <defs>
-                    <linearGradient id="gradient1" x1="200%" y1="0%" x2="0%" y2="200%">
-                        <stop offset="0%" stop-color="rgb(60, 0, 255)"/>
-                        <stop offset="10%" stop-color="rgb(115, 0, 246)"/>
-                        <stop offset="20%" stop-color="rgb(0, 64, 255)"/>
-                        <stop offset="30%" stop-color="rgb(59, 33, 253)"/>
-                        <stop offset="40%" stop-color="rgb(45, 102, 236)"/>
-
-                        <stop offset="50%" stop-color="rgb(60, 0, 255)"/>
-                        <stop offset="60%" stop-color="rgb(115, 0, 246)"/>
-                        <stop offset="70%" stop-color="rgb(0, 64, 255)"/>
-                        <stop offset="80%" stop-color="rgb(59, 33, 253)"/>
-                        <stop offset="90%" stop-color="rgb(45, 102, 236)"/>
-
-                        <stop offset="100%" stop-color="rgb(60, 0, 255)"/>
-
-                        <animateTransform attributeName="gradientTransform"
-                        type="translate"
-                        dur=".2s"
-                        from="0 -1"
-                        to="0 1"
-                        begin="0s"
-                        repeatCount="indefinite"
-                        />
-                    </linearGradient>
-
-                    <linearGradient id="paint0_linear_0_1" x1="130.5" y1="58" x2="130.5" y2="192" gradientUnits="userSpaceOnUse">
-                    <stop stop-color="#FECC7B"/>
-                    <stop offset="1" stop-color="#E29640"/>
-                    </linearGradient>
-
-                    <linearGradient id="paint1_linear_0_1" x1="77" y1="178" x2="152" y2="84" gradientUnits="userSpaceOnUse">
-                    <stop stop-color="#680300"/>
-                    <stop offset="1" stop-color="#D04040"/>
-                    </linearGradient>
-
-                    <linearGradient id="paint2_linear_0_1" x1="-6" y1="11" x2="-9" y2="41" gradientUnits="userSpaceOnUse">
-                    <stop stop-color="#FDDE79"/>
-                    <stop offset="1" stop-color="#EF8D50"/>
-                    </linearGradient>
-
-                    <linearGradient id="paint3_linear_0_1" x1="95" y1="6" x2="175" y2="-18" gradientUnits="userSpaceOnUse">
-                    <stop stop-color="#841A0C"/>
-                    <stop offset="1" stop-color="#D84040"/>
-                    </linearGradient>
-
-                    <linearGradient id="paint4_linear_0_1" x1="153" y1="37" x2="108" y2="73" gradientUnits="userSpaceOnUse">
-                    <stop stop-color="#FCFFB3"/>
-                    <stop offset="1" stop-color="#FDDE79"/>
-                    </linearGradient>
-
-                    <linearGradient id="paint5_linear_0_1" x1="130.5" y1="37" x2="130.5" y2="68" gradientUnits="userSpaceOnUse">
-                    <stop stop-color="#9DA66B"/>
-                    <stop offset="1" stop-color="#866E4D"/>
+                    <linearGradient id="paint0_linear_0_1" x1="280" y1="180" x2="280" y2="380" gradientUnits="userSpaceOnUse">
+                        <stop stop-color="#FFB1B1"/>
+                        <stop offset="1" stop-color="white"/>
                     </linearGradient>
                 </defs>
             </svg>
         </div>
-        <div id="floor"></div>
     </div>
-    <audio src="/HTML/MEDIA/AUDIO/Audio_2025_05_18_05_10_56.aac" id="boom"></audio>
-    <audio src="/HTML/MEDIA/AUDIO/Audio_2025_05_17_13_20_49.mp3" id="click"></audio>
-    <script src="script.js"></script>
+    <div></div>
+    <div class="nav">
+        <hr class="nav-line">
+        <svg class="nav-line-triangle" width="193" height="98" viewBox="0 0 193 98" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M96.1288 97.5L192.258 0H-7.62939e-06L96.1288 97.5Z" fill="rgb(80, 195, 145)"/>
+        </svg>
+    </div>
+    <div class="display">AAAAA</div>
+    <div class="card-list"></div>
+    <script>
+        let flowerList = [
+        ["0b04c75706da1bdc012fbfdae80bf9c0", ['100,50', '2', '240,00'], 'rosa amarela', ['amarelo']],
+        ["download", ['0,99', '10', '1040,99'], 'refri do ben10 gosto cerveja', ['rosa']],
+        ['ece8233c8b0bd76f21e8d60dd4a873b6', ['183,47', '9', '934,43'], 'orquídia amarela', ['buquê']],
+        ['flor', ['20,15', '9'], 'flor preta do bora bill', ['preto']],
+        ['adc67d3e4bc0c51f35c15d1a6e412a6a', ['70,12', '5'], 'cacto roxo', ['azul']],
+        ['2650708295f9ffc442cfa34d8d42fdf8', ['80,50', '2'], 'turquídia azul.', ['laranja']],
+        ]
+        let startloading = true;
+        let innerwidth = 0;
+        let selectpos = 0;
+        let infosvgstring = `
+            <svg class="info-svg" width="260" height="260" viewBox="0 0 260 260" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M130 0C201.797 0 260 58.203 260 130C260 201.797 201.797 260 130 260C58.203 260 0 201.797 0 130C0 58.203 58.203 0 130 0ZM130 28C73.667 28 28 73.667 28 130C28 186.333 73.667 232 130 232C186.333 232 232 186.333 232 130C232 73.667 186.333 28 130 28Z" fill="#D9D9D9"/>
+                <circle cx="129.5" cy="85.5" r="14.5" fill="#D9D9D9"/>
+                <rect x="117" y="121" width="25" height="85" rx="12.5" fill="#D9D9D9"/>
+            </svg>
+        `
+        function leafloop(){
+            for(let i = 1; i < 4; i++){
+                gsap.to(`.leaf${i}`, {
+                    rotate: (-30*i),
+                    ease: "power2.inOut",
+                    duration: 5,
+                    delay: (i-1)*.4
+                })
+            }
+            setTimeout(() => {
+                for(let i = 1; i < 4; i++){
+                    gsap.to(`.leaf${i}`, {
+                        rotate: (-20*(i-1)),
+                        ease: "power2.inOut",
+                        duration: 5,
+                        delay: (i-1)*.4
+                    })
+                }
+                setTimeout(() => {
+                    leafloop()
+                }, 4000)
+            }, 5000)
+        }
+        function flowersloop(){
+            gsap.to(`.flower1`, {
+                rotate: 360,
+                duration: 5,
+                ease: "power2.inOut",
+                onComplete: () => {
+                    gsap.set(`.flower1`, {
+                        rotate: 0,
+                    })
+                    flowersloop()
+                }
+            })
+        }
+        function generatecard(i){
+            let typepromo = false
+            if(flowerList[i % flowerList.length][1].length > 2){
+                typepromo = true
+            }
+            return `
+            <div class="card">
+                <img loading="lazy" class="imagem" src="./${flowerList[(i) % flowerList.length][0]}.jpg" alt="" width="300px">
+                <div class="info-area">
+                    <div>
+                        <div>R$ ${flowerList[i % flowerList.length][1][0]}</div>
+                        <div>parcela em ${flowerList[i % flowerList.length][1][1]}x</div>
+                    </div>
+                    ${typepromo ? `<div style="text-decoration: line-through; color: rgb(172, 221, 195)">R$ ${flowerList[i % flowerList.length][1][2]}</div>` : ''}
+                </div>
+                <div>
+                    ${infosvgstring}
+                </div>
+                <div>
+                    ${flowerList[i % flowerList.length][2]}
+                </div>
+            </div>`
+        }
+        function verificationloop(){
+            let newIW = window.innerWidth
+            if((newIW !== innerwidth) || startloading){
+                startloading = false
+                let htmlText = ``
+                if(newIW > 900){
+                    [term1, term2, term3, term4] = [``, ``, ``, ``]
+                    for(let i = 1; i < 100; i+=1){
+                        term1 += generatecard(i); term2 += generatecard(i+1)
+                        term3 += generatecard(i+2); term4 += generatecard(i+3)
+                    }
+                    htmlText = `
+                    <div class="card-column">${term1}</div>
+                    <div class="card-column">${term2}</div>
+                    <div class="card-column">${term3}</div>
+                    <div class="card-column">${term4}</div>`
+                }
+                else if(newIW > 700){
+                    [term1, term2, term3] = [``, ``, ``]
+                    for(let i = 1; i < 100; i+=1){
+                        term1 += generatecard(i); term2 += generatecard(i+1)
+                        term3 += generatecard(i+2)
+                    }
+                    htmlText = `
+                    <div class="card-column">${term1}</div>
+                    <div class="card-column">${term2}</div>
+                    <div class="card-column">${term3}</div>`
+                }
+                else{
+                    [term1, term2] = [``, ``]
+                    for(let i = 1; i < 100; i+=1){
+                        term1 += generatecard(i); term2 += generatecard(i+1)
+                    }
+                    htmlText = `
+                    <div class="card-column">${term1}</div>
+                    <div class="card-column">${term2}</div>
+                    `
+                }
+                document.querySelector(`.card-list`).innerHTML = htmlText
+            }
+            innerwidth = newIW
+            requestAnimationFrame(() => {
+                verificationloop()
+            })
+        }
+        function navline(selection){
+            gsap.to(`.nav-line-triangle`, {
+                left: `calc(${selection * 25 + 12.5}% - 98px)`,
+                duration: 0.4
+            })
+            Array.from(document.querySelector(`.cont`).children).forEach((ele, ind) => {
+                if(ind == selection) ele.className = "selected"
+                else ele.className = "unselected"
+            })
+        }
+        document.querySelector(`.cont`).addEventListener('click', (e) => e.preventDefault())
+        verificationloop()
+        leafloop()
+        flowersloop()
+
+        // CONSERTAR LÓGICA DE APARIÇÃO    ()
+        // CAIXA DE SELEÇÃO                ()
+        // FIGMA ICONS                     ()
+        // SISTEMA DE MOVER PÁGINA         ()
+        // OTIMIZAR PÁGINA, OBSERVER       ()
+        // CONSERTAR TRAINGULO DE SELEÇÃO  ( check )
+        // CONSERTAR FLOWER                ( check )
+        // FAZER GALERIA DE FLORES         ( check )
+    </script>
 </body>
+</html>
