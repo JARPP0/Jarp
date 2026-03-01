@@ -4,275 +4,364 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link rel="stylesheet" href="./style.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <style>
-        /* GERAL */
+/* GERAL */
+:root{
+    --media-size: 25vw;
+    --column-count: 4;
+}
+body, html{
+    margin: 0;
+    user-select: none;
+    height: 100dvh;
+    background-color: rgb(247, 255, 249);
+    overflow: hidden;
+}
 
-        body, html{
-            margin: 0;
-            background-color: hsl(0, 0%, 100%);
-            user-select: none;
-            height: 100dvh;
-            scrollbar-color: red;
-            overflow: hidden;
+/* HEADER */
+
+header{
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    background: rgb(211, 249, 204);
+    box-shadow: inset 0 -10px 10px rgb(222, 255, 187);
+    height: 140px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-size: 30px;
+}
+
+.header{
+    display: flex;
+    position: relative;
+    flex-direction: column;
+}
+
+/* NAV */
+
+.cont{
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2px;
+    transform: translateY(2px);
+    background-color: hsl(23, 46%, 67%);
+    padding: 3px 0px;
+}
+.cont a{
+    font-weight: bold;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-align: center;
+    color: hsl(15, 30%, 60%);
+    border-bottom: 2px solid hsl(32, 47%, 57%);
+    text-decoration: none;
+    transition: background .1s ease-in-out;
+
+    &:hover{
+        background: hsl(26, 73%, 85%);
+        cursor: pointer;
+    }
+    &:active{
+        background: hsl(27, 78%, 89%);
+        cursor: pointer;
+    }
+}
+.unselected{
+    background: hsl(26, 84%, 80%);
+}
+.selected{
+    background: hsl(26, 70%, 82%);
+}
+.nav{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+.nav-line{
+    border: 1px solid rgb(80, 195, 145);
+    transform: translateY(-2px);
+    width: 100vw;
+}
+
+.nav-line-triangle{
+    left: calc(12.5% - 98px);
+    transform: scale(.1);
+    top: -37px;
+    position: absolute;
+}
+/* SEARCH */
+
+.search{
+    display: flex;
+    width: 100vw;
+    height: 40px;
+    justify-content: center;
+    & input{
+        border: 3px solid rgb(247, 174, 122);
+        padding: 0 20px;
+        justify-self: center;
+        background-color: rgb(243, 255, 201);
+        width: calc(100vw - 100px);
+        border-radius: 100px;
+        &::placeholder{
+            color: rgb(248, 165, 121);
         }
-
-        /* HEADER */
-
-        header{
-            font-family: Georgia, 'Times New Roman', Times, serif;
-            background: rgb(218, 255, 220);
-            text-shadow: 0 0 10px rgb(73, 175, 131);
-            box-shadow: inset 0 -10px 10px rgb(187, 255, 198);
-            height: 140px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            color: white;
-            font-size: 30px;
+    }
+    & button{
+        border: 3px solid rgb(247, 160, 122);
+        background-color: rgb(253, 216, 177);
+        width: 40px;
+        border-radius: 100px;
+        &:hover{
+            background-color: hsl(31, 100%, 89%);
         }
-
-        .header{
-            display: flex;
-            position: relative;
-            flex-direction: column;
+        &:active{
+            background-color: hsl(30, 100%, 95%);
         }
+    }
+}
+/* CARDS */
 
-        /* NAV */
+.card{
+    transition: transform 0.1s ease-in-out;
+    width: var(--media-size);
+    &:hover{
+        transform: translateY(2px);
+    }
+}
+.card div:nth-child(4){
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-weight: 500;
+    transform: translateY(-30px);
+}
 
-        .cont{
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 2px;
-            transform: translateY(2px);
-            background-color: hsl(31, 12%, 37%);
-            padding: 3px 0px;
+.imagem{
+    cursor: pointer;
+    width: calc(var(--media-size) + 20px);
+    transition: border 0.3s ease-out, transform .2s ease-in-out;
+    box-shadow: 4px 4px 14px rgba(75, 73, 73, 0.353);
+    &:hover{
+        & + div{
+            background: rgba(172, 179, 123, 0.889);
         }
-        .cont a{
-            font-weight: bold;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            text-align: center;
-            color: rgb(155, 112, 85);
-            border: 2px solid rgb(221, 184, 135);
-            border-bottom: 2px solid rgb(255, 255, 255);
-            text-decoration: none;
-            transition: background .1s ease-in-out;
+    }
+}
+.imagem{
+    &:active{
+        & + div{
+            background: linear-gradient(12deg, rgba(207, 194, 135, 0.845), rgba(172, 182, 133, 0.8));
+        }
+    }
+}
 
-            &:hover{
-                background: hsl(27, 100%, 86%);
-                cursor: pointer;
-            }
-            &:active{
-                background: hsl(43, 100%, 93%);
-                cursor: pointer;
-            }
-        }
-        .nav{
-            position: relative;
-            display: flex;
-            flex-direction: column;
-        }
-        .nav-line{
-            border: 1px solid rgb(80, 195, 145);
+.info-area{
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-weight: 500;
+    background: linear-gradient(12deg, rgba(144, 200, 135, 0.8), rgba(139, 151, 99, 0.8));
+    color: rgb(237, 255, 223);
+    padding: 0px 5px;
+    width: calc(var(--media-size) - 18px);
+    height: 40px;
+    display: grid;
+    grid-template-columns: 1.6fr 1.5fr 0.5fr;
+    transform: translate(-2px, -40px);
+    transition: transform .2s ease-in-out;
+    & div:nth-child(1){
+        grid-template-rows: 20px 20px;
+        transform: translate(0px, 1px);
+        & div:nth-child(2){
             transform: translateY(-2px);
-            width: 100vw;
+            font-size: 13px;
         }
+    }
+    
+}
+.image-crop{
+    height: calc(var(--media-size) - 10px);
+    width: calc(var(--media-size) - 10px);
+    margin-right: 10px;
+    border: 2px solid rgb(94, 174, 128);
+    overflow: hidden;
+}
+/* DISPLAY */
 
-        .nav-line-triangle{
-            left: calc(12.5% - 98px);
-            transform: scale(.1);
-            top: -37px;
-            position: absolute;
+.display{
+    position: absolute;
+    display: flex;
+    justify-self: flex-end;
+    flex-direction: column;
+    display: none;
+    align-items: center;
+    z-index: 3;
+    background: linear-gradient(0deg, rgba(248, 213, 177, 0.618), rgba(243, 255, 148, 0.431));
+    backdrop-filter: brightness(35%) blur(10px) hue-rotate(60deg);
+    box-shadow: 0 0 30px -13px rgb(0, 0, 0);
+    padding: 20px 10px;
+    width: 370px;
+    border-radius: 10px;
+    color: white;
+    transform: scale(.85) translateY(-15px);
+    transform-origin: top right;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    & img{
+        width: 270px;
+        border: 3px solid rgb(252, 243, 199);
+    }
+    & h1{
+        margin-bottom: -17px;
+    }
+    & h3{
+        color: rgb(244, 225, 186);
+    }
+    & hr{
+        width: 100%;
+        border: 2px solid azure;
+    }
+    & button{
+        background: linear-gradient(30deg, rgb(255, 150, 112), rgb(253, 166, 119));
+        width: calc(100% - 20px);
+        border: none;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        color: white;
+        font-size: 20px;
+        height: 50px;
+        font-weight: bolder;
+        cursor: pointer;
+        & span{
+            display: inline-block;
+            transform: translateY(-10px);
         }
+    }
+    & div{
+        position: absolute;
+        display: flexbox;
+        width: 100%;
+        transform-origin: left center;
+        transform: translate(5px, -20px) scale(.8);
+        cursor: pointer;
+    }
+    & button:hover{
+        background: linear-gradient(30deg, rgb(255, 169, 112), rgb(253, 181, 119));
+    }    
+    & button:active{
+        background: linear-gradient(30deg, rgb(255, 200, 112), rgb(253, 195, 119));
+    }    
+}
+/* SLIDES */
 
-        /* CARDS */
+.sliderlist h1{
+    background-clip: text;
+    color: transparent;
+    display: inline-block;
+    transform: translateX(calc(50vw - 50% - 5px));
+    background-image: linear-gradient(0deg, rgb(139, 214, 191),rgb(121, 255, 119));
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+.sliderlist{
+    max-height: calc(100vh - 230px);
+    scrollbar-color: rgb(255, 186, 122) transparent;
+    scrollbar-width: thin;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+.slides{
+    display: flex;
+}
+.slider{
+    background: rgba(199, 232, 191, 0.751);
+    position: relative;
+}
+.arrow-btn{
+    position: absolute;
+    background-color: rgba(101, 193, 98, 0.749);
+    border-radius: 10px;
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    color: white;
+    width: 35px;
+    height: 35px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transform: translate(calc(50% - 20px), calc(-50vw / var(--column-count) - 60px));
+    &:hover{
+        background-color: rgba(249, 255, 169, 0.386);
+    }
+    &:active{
+        background-color: rgba(249, 255, 169, 0.698);
+    }
+}
+.right{
+    transform: translate(calc(100vw - 45px), calc(-50vw / var(--column-count) - 60px));
+}
+/* DECO-SVGS */
 
-        .card-list::-webkit-scrollbar{
-            width: 15px;
-            background-color: rgb(140, 198, 154);
-            box-shadow: 0 0 10px rgba(57, 76, 53, 0.773);
-            border: 3px solid white;
-            border-radius: 10px;
-        }
-        .card-list::-webkit-scrollbar-thumb{
-            background-color: rgb(176, 235, 174);
-            border-radius: 10px;
-        }
-        .card-list::-webkit-scrollbar-thumb:hover{
-            background-color: rgb(184, 255, 222);
-        }
+.svg{
+    fill: rgb(254, 199, 162);
+}
 
-        .unselected{
-            background: hsl(27, 100%, 80%);
-        }
-        .selected{
-            background: hsl(27, 100%, 87%);
-        }
-        .card-list{
-            scale: .99;
-            display: grid;
-            overflow-y: auto;
-            overflow-x: hidden;
-            height: 100%;
-            & *{
-                transform: translateY(10px);
-            }
-        }
-        .card{
-            transition: transform 0.1s ease-in-out;
-            &:hover{
-                transform: translateY(2px);
-            }
-        }
-        .card div:nth-child(4){
-            transform: translateY(-50px);
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            font-weight: 500;
-        }
-        .card-column{
-            width: calc(25vw);
-            height: 200px;
-        }
-        .imagem{
-            width: 25vw;
-            border: 3px solid rgb(89, 163, 116);
-            transform: translate(-5px, -13px);
-            transition: border 0.3s ease-out, transform .2s ease-in-out;
-            box-shadow: 4px 4px 2px rgba(0, 0, 0, 0.426);
-            margin-bottom: 0px;
-            &:hover{
-                border: 3px solid rgb(104, 188, 105);
-                & + div{
-                    background: rgb(89, 163, 116);
-                }
-            }
-        }
-        .imagem{
-            &:active{
-                border: 3px solid rgb(81, 202, 148);
-                & + div{
-                    background: rgb(81, 202, 148);
-                }
-            }
-        }
+.leaf{
+    transform-origin: 45px 0px;
+    position: absolute
+}
+.plant{
+    position: absolute;
+    align-self: start;
+    transform: translateX(-9px) scale(.3);
+}
+.flower1{
+    position: absolute;
+    align-self: end;
+    transform: translate(230px, -215px) scale(.15);
+}
+.info-svg{
+    position: absolute;
+    transform: scale(.1) translate(calc(var(--media-size) * 10 - 1550px), -1880px);
+    & *{
+        transform: translateY(-1px);
+        fill: rgb(245, 255, 212);
+    }
+}
+.cart-svg{
+    transform: scale(.6) translate(0px, 5px);
+}
+.search-svg{
+    transform: scale(.6) translate(-8px, -1px);
+    & *{
+        fill: rgb(211, 172, 131);
+    }
+}
+.exit-svg{
+    transform: translateY(3px);
+    & *{
+        fill: rgb(211, 172, 131);
+    }
+}
+/* MEDIAS */
 
-        .info-area{
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            font-weight: 500;
-            background: linear-gradient(12deg, rgb(43, 160, 127, .8), rgb(48, 164, 61, .8));
-            color: rgb(221, 255, 194);
-            padding: 0px 5px;
-            height: 40px;
-            display: grid;
-            grid-template-columns: 1.6fr 1.5fr 0.5fr;
-            transform: translate(-2px, -57px);
-            transition: transform .2s ease-in-out;
-            & div:nth-child(1){
-                grid-template-rows: 20px 20px;
-                transform: translate(0px, 1px);
-                & div:nth-child(2){
-                    transform: translateY(-2px);
-                    font-size: 13px;
-                }
-            }
-            
-        }
-        .info-svg{
-            position: absolute;
-            transform: scale(.1) translate(calc(250vw - 1710px), -2160px);
-            & *{
-                transform: translateY(2px);
-                fill: rgb(245, 255, 212);
-            }
-        }
-        /* DISPLAY */
-
-        .display{
-            position: absolute;
-            z-index: 3;
-            display: none;
-            background: rgba(112, 152, 107, 0.192);
-            backdrop-filter: brightness(40%) blur(10px);
-            box-shadow: 0 0 30px -4px black;
-            padding: 20px 10px;
-            width: 33vw;
-            border-radius: 10px;
-            height: calc(100dvh - 200px);
-            transform: translateX(66vw);
-            color: white;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        /* DECO-SVGS */
-
-        .svg{
-            fill: rgb(254, 223, 162);
-        }
-
-        .leaf{
-            transform-origin: 45px 0px;
-            position: absolute
-        }
-        .plant{
-            position: absolute;
-            align-self: start;
-            transform: translateX(-9px) scale(.3);
-        }
-        .flower1{
-            position: absolute;
-            align-self: end;
-            transform: translate(230px, -215px) scale(.15);
-        }
-
-        /* MEDIAS */
-
-        @media (min-width: 900px){
-            .card-list{
-                grid-template-columns: 1fr 1fr 1fr 1fr;
-            }
-            .info-area{
-                width: calc(25vw - 35px);
-            }
-            .imagem{
-                width: calc(25vw - 25px);
-            }
-            .info-svg{
-                transform: scale(.1) translate(calc(250vw - 1710px), -2160px);
-            }
-        }
-        @media (max-width: 900px){
-            .card-list{
-                grid-template-columns: 1fr 1fr 1fr;
-            }
-            .info-area{
-                width: calc(33.33vw - 35px);
-            }
-            .imagem{
-                width: calc(33.33vw - 25px);
-            }
-            .info-svg{
-                transform: scale(.1) translate(calc(333.33vw - 1710px), -2160px);
-            }
-        }
-        @media (max-width: 700px){
-            .card-list{
-                grid-template-columns: 1fr 1fr;
-            }
-            .info-area{
-                width: calc(50vw - 35px);
-            }
-            .imagem{
-                width: calc(50vw - 25px);
-            }
-            .info-svg{
-                transform: scale(.1) translate(calc(500vw - 1710px), -2160px);
-            }
-        }
+@media (min-width: 900px){
+    :root {--media-size: 25vw; --column-count: 4}
+    .card-list{
+        grid-template-columns: 1fr 1fr 1fr 1fr;
+    }
+}
+@media (max-width: 900px){
+    :root {--media-size: 33.3333vw; --column-count: 3}
+    .card-list{
+        grid-template-columns: 1fr 1fr 1fr;
+    }
+}
+@media (max-width: 700px){
+    :root {--media-size: 50vw; --column-count: 2}
+    .card-list{
+        grid-template-columns: 1fr 1fr;
+    }
+}
     </style>
-</head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/fuse.js/dist/fuse.min.js"></script>
 <body>
     <div class="header">
-        <header><img src="./logo.png" alt="viveiro vida verde cultural" width="300px"></header>
+        <header><img src="./imagens/logo.png" alt="viveiro vida verde cultural" width="300px"></header>
         <div class="cont">
             <a href="" onclick="navline(0)" class="selected">Home</a>
             <a href="" onclick="navline(1)" class="unselected">Nossos produtos</a>
@@ -296,185 +385,376 @@
                 <path class="svg" d="M49.7614 330.072C47.4393 340.51 32.5607 340.51 30.2386 330.072L6.33469 222.622C4.94523 216.376 9.69763 210.45 16.0961 210.45H63.9039C70.3024 210.45 75.0548 216.376 73.6653 222.622L49.7614 330.072Z" fill="rgb(1, 1, 1)"/>
             </svg>
         </div>
-        <div class="flower1">
-            <svg width="560" height="560" viewBox="0 0 560 560" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <circle cx="140" cy="420" r="140" fill="#FF7373"/>
-                <rect x="140" y="280" width="140" height="140" fill="#FF7373"/>
-                <circle cx="140" cy="140" r="140" transform="matrix(1 0 0 -1 0 280)" fill="#FF7373"/>
-                <rect width="140" height="140" transform="matrix(1 0 0 -1 140 280)" fill="#FF7373"/>
-                <circle cx="140" cy="140" r="140" transform="matrix(-1 0 0 1 560 280)" fill="#FF7373"/>
-                <rect width="140" height="140" transform="matrix(-1 0 0 1 420 280)" fill="#FF7373"/>
-                <circle cx="420" cy="140" r="140" transform="rotate(180 420 140)" fill="#FF7373"/>
-                <rect x="420" y="280" width="140" height="140" transform="rotate(180 420 280)" fill="#FF7373"/>
+            <svg class="flower1" width="560" height="560" viewBox="0 0 560 560" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="140" cy="420" r="140" fill="#ffc2a3"/>
+                <rect x="140" y="280" width="140" height="140" fill="#ffc2a3"/>
+                <circle cx="140" cy="140" r="140" transform="matrix(1 0 0 -1 0 280)" fill="#ffc2a3"/>
+                <rect width="140" height="140" transform="matrix(1 0 0 -1 140 280)" fill="#ffc2a3"/>
+                <circle cx="140" cy="140" r="140" transform="matrix(-1 0 0 1 560 280)" fill="#ffc2a3"/>
+                <rect width="140" height="140" transform="matrix(-1 0 0 1 420 280)" fill="#ffc2a3"/>
+                <circle cx="420" cy="140" r="140" transform="rotate(180 420 140)" fill="#ffc2a3"/>
+                <rect x="420" y="280" width="140" height="140" transform="rotate(180 420 280)" fill="#ffc2a3"/>
                 <path d="M280 180L307.009 252.991L380 280L307.009 307.009L280 380L252.991 307.009L180 280L252.991 252.991L280 180Z" fill="url(#paint0_linear_0_1)"/>
-                <circle cx="140" cy="420" r="36" fill="#FF8080"/>
-                <circle cx="420" cy="416" r="36" fill="#FF8080"/>
-                <circle cx="420" cy="140" r="36" fill="#FF8080"/>
-                <circle cx="140" cy="140" r="36" fill="#FF8080"/>
+                <circle cx="140" cy="420" r="36" fill="#f7cab5"/>
+                <circle cx="420" cy="416" r="36" fill="#f7cab5"/>
+                <circle cx="420" cy="140" r="36" fill="#f7cab5"/>
+                <circle cx="140" cy="140" r="36" fill="#f7cab5"/>
                 <defs>
                     <linearGradient id="paint0_linear_0_1" x1="280" y1="180" x2="280" y2="380" gradientUnits="userSpaceOnUse">
-                        <stop stop-color="#FFB1B1"/>
+                        <stop stop-color="#FCFFB1"/>
                         <stop offset="1" stop-color="white"/>
                     </linearGradient>
                 </defs>
             </svg>
         </div>
-    </div>
-    <div></div>
     <div class="nav">
         <hr class="nav-line">
         <svg class="nav-line-triangle" width="193" height="98" viewBox="0 0 193 98" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M96.1288 97.5L192.258 0H-7.62939e-06L96.1288 97.5Z" fill="rgb(80, 195, 145)"/>
         </svg>
     </div>
-    <div class="display">AAAAA</div>
-    <div class="card-list"></div>
-    <script>
-        let flowerList = [
-        ["0b04c75706da1bdc012fbfdae80bf9c0", ['100,50', '2', '240,00'], 'rosa amarela', ['amarelo']],
-        ["download", ['0,99', '10', '1040,99'], 'refri do ben10 gosto cerveja', ['rosa']],
-        ['ece8233c8b0bd76f21e8d60dd4a873b6', ['183,47', '9', '934,43'], 'orquídia amarela', ['buquê']],
-        ['flor', ['20,15', '9'], 'flor preta do bora bill', ['preto']],
-        ['adc67d3e4bc0c51f35c15d1a6e412a6a', ['70,12', '5'], 'cacto roxo', ['azul']],
-        ['2650708295f9ffc442cfa34d8d42fdf8', ['80,50', '2'], 'turquídia azul.', ['laranja']],
-        ]
-        let startloading = true;
-        let innerwidth = 0;
-        let selectpos = 0;
-        let infosvgstring = `
-            <svg class="info-svg" width="260" height="260" viewBox="0 0 260 260" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M130 0C201.797 0 260 58.203 260 130C260 201.797 201.797 260 130 260C58.203 260 0 201.797 0 130C0 58.203 58.203 0 130 0ZM130 28C73.667 28 28 73.667 28 130C28 186.333 73.667 232 130 232C186.333 232 232 186.333 232 130C232 73.667 186.333 28 130 28Z" fill="#D9D9D9"/>
-                <circle cx="129.5" cy="85.5" r="14.5" fill="#D9D9D9"/>
-                <rect x="117" y="121" width="25" height="85" rx="12.5" fill="#D9D9D9"/>
+    <div class="display"></div>
+    <div class="search">
+        <input class="search-text" type="text" placeholder="Buquê, flores amarelas...">
+        <button class="search-btn">
+            <svg class="search-svg" width="37" height="37" viewBox="0 0 37 37" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect x="21" y="25.2426" width="6" height="17.8596" rx="3" transform="rotate(-45 21 25.2426)" fill="#D9D9D9"/>
+                <path d="M15 0C23.2843 0 30 6.71573 30 15C30 23.2843 23.2843 30 15 30C6.71573 30 0 23.2843 0 15C0 6.71573 6.71573 0 15 0ZM15 4.5C9.20101 4.5 4.5 9.20101 4.5 15C4.5 20.799 9.20101 25.5 15 25.5C20.799 25.5 25.5 20.799 25.5 15C25.5 9.20101 20.799 4.5 15 4.5Z" fill="#D9D9D9"/>
             </svg>
-        `
-        function leafloop(){
-            for(let i = 1; i < 4; i++){
-                gsap.to(`.leaf${i}`, {
-                    rotate: (-30*i),
-                    ease: "power2.inOut",
-                    duration: 5,
-                    delay: (i-1)*.4
-                })
-            }
-            setTimeout(() => {
-                for(let i = 1; i < 4; i++){
-                    gsap.to(`.leaf${i}`, {
-                        rotate: (-20*(i-1)),
-                        ease: "power2.inOut",
-                        duration: 5,
-                        delay: (i-1)*.4
-                    })
-                }
-                setTimeout(() => {
-                    leafloop()
-                }, 4000)
-            }, 5000)
-        }
-        function flowersloop(){
-            gsap.to(`.flower1`, {
-                rotate: 360,
-                duration: 5,
-                ease: "power2.inOut",
-                onComplete: () => {
-                    gsap.set(`.flower1`, {
-                        rotate: 0,
-                    })
-                    flowersloop()
-                }
-            })
-        }
-        function generatecard(i){
-            let typepromo = false
-            if(flowerList[i % flowerList.length][1].length > 2){
-                typepromo = true
-            }
-            return `
-            <div class="card">
-                <img loading="lazy" class="imagem" src="./${flowerList[(i) % flowerList.length][0]}.jpg" alt="" width="300px">
-                <div class="info-area">
-                    <div>
-                        <div>R$ ${flowerList[i % flowerList.length][1][0]}</div>
-                        <div>parcela em ${flowerList[i % flowerList.length][1][1]}x</div>
-                    </div>
-                    ${typepromo ? `<div style="text-decoration: line-through; color: rgb(172, 221, 195)">R$ ${flowerList[i % flowerList.length][1][2]}</div>` : ''}
-                </div>
-                <div>
-                    ${infosvgstring}
-                </div>
-                <div>
-                    ${flowerList[i % flowerList.length][2]}
-                </div>
-            </div>`
-        }
-        function verificationloop(){
-            let newIW = window.innerWidth
-            if((newIW !== innerwidth) || startloading){
-                startloading = false
-                let htmlText = ``
-                if(newIW > 900){
-                    [term1, term2, term3, term4] = [``, ``, ``, ``]
-                    for(let i = 1; i < 100; i+=1){
-                        term1 += generatecard(i); term2 += generatecard(i+1)
-                        term3 += generatecard(i+2); term4 += generatecard(i+3)
-                    }
-                    htmlText = `
-                    <div class="card-column">${term1}</div>
-                    <div class="card-column">${term2}</div>
-                    <div class="card-column">${term3}</div>
-                    <div class="card-column">${term4}</div>`
-                }
-                else if(newIW > 700){
-                    [term1, term2, term3] = [``, ``, ``]
-                    for(let i = 1; i < 100; i+=1){
-                        term1 += generatecard(i); term2 += generatecard(i+1)
-                        term3 += generatecard(i+2)
-                    }
-                    htmlText = `
-                    <div class="card-column">${term1}</div>
-                    <div class="card-column">${term2}</div>
-                    <div class="card-column">${term3}</div>`
-                }
-                else{
-                    [term1, term2] = [``, ``]
-                    for(let i = 1; i < 100; i+=1){
-                        term1 += generatecard(i); term2 += generatecard(i+1)
-                    }
-                    htmlText = `
-                    <div class="card-column">${term1}</div>
-                    <div class="card-column">${term2}</div>
-                    `
-                }
-                document.querySelector(`.card-list`).innerHTML = htmlText
-            }
-            innerwidth = newIW
-            requestAnimationFrame(() => {
-                verificationloop()
-            })
-        }
-        function navline(selection){
-            gsap.to(`.nav-line-triangle`, {
-                left: `calc(${selection * 25 + 12.5}% - 98px)`,
-                duration: 0.4
-            })
-            Array.from(document.querySelector(`.cont`).children).forEach((ele, ind) => {
-                if(ind == selection) ele.className = "selected"
-                else ele.className = "unselected"
-            })
-        }
-        document.querySelector(`.cont`).addEventListener('click', (e) => e.preventDefault())
-        verificationloop()
-        leafloop()
-        flowersloop()
+        </button>
+    </div>
+    <br>
+    <div class="sliderlist">
+    </div>
+    <script>
+['url imagem', ['preço', 'parcela', 'preço antigo (promoção)'], 'texto título', 'tags pesquisa', 'coordenadaY']
 
-        // CONSERTAR LÓGICA DE APARIÇÃO    ()
-        // CAIXA DE SELEÇÃO                ()
-        // FIGMA ICONS                     ()
-        // SISTEMA DE MOVER PÁGINA         ()
-        // OTIMIZAR PÁGINA, OBSERVER       ()
-        // CONSERTAR TRAINGULO DE SELEÇÃO  ( check )
-        // CONSERTAR FLOWER                ( check )
-        // FAZER GALERIA DE FLORES         ( check )
+let flowerList = [
+['balão1.jpg', ['105,50', '5', '125,75'], 'balão rosa', 'balão rosa'],
+['balão2.jpg', ['134,99', '2'], 'balão vermelho', 'balão vermelho'],
+['balão3.jpg', ['60,70', '4'], `balão branco com texto 'parabéns'`, 'balão branco texto'],
+['balão4.jpg', ['200,35', '8'], 'balão roxo e flores rosas', 'balão roxo rosa'],
+['buquê1.jpg', ['130,50', '12'], 'buquê de flores vermelhas e brancas, mini', 'buquê vermelho'],
+['buquê2.jpg', ['150,15', '7', '220,40'], 'buquê de flores vermelhas e brancas', 'buquê vermelho branco'],
+['buquê3.jpg', ['212,39', '4', '240,15'], 'buquê de flores arrosadas', 'buquê rosa'],
+['buquê4.jpg', ['235,69', '2'], 'buquê de flores brancas', 'buquê branco'],
+['combo1.jpg', ['305,69', '3'], 'combo temático azul', 'combo azul'],
+['combo2.jpg', ['235,60', '8', '300,55'], 'combo temático madeira', 'combo marrom laranja'],
+['combo3.jpg', ['135,55', '6'], 'combo em cesta presente', 'combo presente chocolate'],
+['combo4.jpg', ['85,75', '7'], 'combo em buquê, cesta e chocolate', 'combo presente chocolate'],
+['coroa1.jpg', ['105,50', '3'], 'coroa amarela e branca', 'coroa amarelo branco'],
+['coroa2.jpg', ['75,25', '3', '100,50'], 'coroa rosa', 'coroa rosa'],
+['coroa3.jpg', ['40,15', '7'], 'coroa branca', 'coroa branco'],
+['coroa4.jpg', ['70,40', '9'], 'coroa vermelha e branca', 'coroa vermelho branco'],
+['orquídea1.jpg', ['30,59', '10'], 'orquídea magenta', 'orquídea magenta rosa'],
+['orquídea2.jpg', ['60,99', '11'], 'orquídea magenta forte', 'orquídea magenta rosa'],
+['orquídea3.jpg', ['85,65', '7'], 'orquídea roxo claro', 'orquídea roxo claro', 20],
+['orquídea4.jpg', ['129,99', '5'], 'orquídea rosa', 'orquídea rosa'],
+['ramalhete1.jpg', ['130,25', '3'], 'ramalhete flores vermelhas', 'ramalhete vermelho'],
+['ramalhete2.jpg', ['105,50', '4', '215,20'], 'ramalhete flores amarelas', 'ramalhete amarela'],
+['ramalhete3.jpg', ['50,00', '8'], 'ramalhete flor vermelho escuro', 'ramalhete vermelho escuro'],
+['ramalhete4.jpg', ['65,20', '6'], 'ramalhete flor branca', 'ramalhete branca'],
+]
+let startloading = true;
+let selectpos = 0;
+let infosvgstring = `
+    <svg class="info-svg" width="260" height="260" viewBox="0 0 260 260" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M130 0C201.797 0 260 58.203 260 130C260 201.797 201.797 260 130 260C58.203 260 0 201.797 0 130C0 58.203 58.203 0 130 0ZM130 28C73.667 28 28 73.667 28 130C28 186.333 73.667 232 130 232C186.333 232 232 186.333 232 130C232 73.667 186.333 28 130 28Z" fill="#D9D9D9"/>
+        <circle cx="129.5" cy="85.5" r="14.5" fill="#D9D9D9"/>
+        <rect x="117" y="121" width="25" height="85" rx="12.5" fill="#D9D9D9"/>
+    </svg>
+`
+let exitsvgstring = `
+    <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="-0.915863" y="18.823" width="27.9149" height="4.42216" rx="2.21108" transform="rotate(-45 -0.915863 18.823)" fill="azure"/>
+        <rect x="2.21109" y="-0.915863" width="27.9149" height="4.42216" rx="2.21108" transform="rotate(45 2.21109 -0.915863)" fill="azure"/>
+    </svg>`
+let searchexitsvgstring = `
+    <svg class="exit-svg" width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="-0.915863" y="18.823" width="27.9149" height="4.42216" rx="2.21108" transform="rotate(-45 -0.915863 18.823)" fill="azure"/>
+        <rect x="2.21109" y="-0.915863" width="27.9149" height="4.42216" rx="2.21108" transform="rotate(45 2.21109 -0.915863)" fill="azure"/>
+    </svg>`
+let searchsvgstring = `
+    <svg class="search-svg" width="37" height="37" viewBox="0 0 37 37" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="21" y="25.2426" width="6" height="17.8596" rx="3" transform="rotate(-45 21 25.2426)" fill="#D9D9D9"/>
+        <path d="M15 0C23.2843 0 30 6.71573 30 15C30 23.2843 23.2843 30 15 30C6.71573 30 0 23.2843 0 15C0 6.71573 6.71573 0 15 0ZM15 4.5C9.20101 4.5 4.5 9.20101 4.5 15C4.5 20.799 9.20101 25.5 15 25.5C20.799 25.5 25.5 20.799 25.5 15C25.5 9.20101 20.799 4.5 15 4.5Z" fill="#D9D9D9"/>
+    </svg>
+`
+let baseSlider = `
+        <h1>DESTAQUES</h1>
+        ${generateslider(3, 5, 10, 12, 18, 20, 23)}
+        <h1>PROMOÇÃO</h1>
+        ${generateslider(0, 5, 6, 9, 13, 21)}
+        <h1>ORQUÍDEAS</h1>
+        ${generateslider(16, 17, 18, 19)}
+        <h1>BUQUÊS</h1>
+        ${generateslider(4, 5, 6, 7)}
+        <h1>RAMALHETES</h1>
+        ${generateslider(20, 21, 22, 23)}
+        <h1>COROAS</h1>
+        ${generateslider(12, 13, 14, 15)}
+        <h1>BALÕES</h1>
+        ${generateslider(0, 1, 2, 3)}
+        <h1>COMBOS</h1>
+        ${generateslider(8, 9, 10, 11)}
+`
+let searchState = false;
+let displaydisplaying = false;
+function leafloop(){
+    for(let i = 1; i < 4; i++){
+        gsap.to(`.leaf${i}`, {
+            rotate: (-30*i),
+            ease: "power2.inOut",
+            duration: 5,
+            delay: (i-1)*.4
+        })
+    }
+    setTimeout(() => {
+        for(let i = 1; i < 4; i++){
+            gsap.to(`.leaf${i}`, {
+                rotate: (-20*(i-1)),
+                ease: "power2.inOut",
+                duration: 5,
+                delay: (i-1)*.4
+            })
+        }
+        setTimeout(() => {
+            leafloop()
+        }, 4000)
+    }, 5000)
+}
+function flowersloop(){
+    gsap.to(`.flower1`, {
+        rotate: 360,
+        duration: 5,
+        ease: "power2.inOut",
+        onComplete: () => {
+            gsap.set(`.flower1`, {
+                rotate: 0,
+            })
+            flowersloop()
+        }
+    })
+}
+function generatecard(i){
+    let typepromo = false
+    if(flowerList[i][1].length > 2){
+        typepromo = true
+    }
+    return `
+    <div class="card">
+        <div class="image-crop">
+            <img onclick="display(${i})" loading="lazy" class="imagem" src="./imagens/${flowerList[(i) % flowerList.length][0]}" style="transform: translateY(${flowerList[i][4]}px)">
+        </div>
+        <div class="info-area">
+            <div>
+                <div>R$ ${flowerList[i][1][0]}</div>
+                <div>parcela em ${flowerList[i][1][1]}x</div>
+            </div>
+            ${typepromo ? `<div style="font-size: 15px; text-decoration: line-through; color: rgb(207, 227, 174); transform: translateY(10px);">R$ ${flowerList[i % flowerList.length][1][2]}</div>` : ''}
+        </div>
+        <div style="position: relative">${infosvgstring}</div>
+        <div>${flowerList[i][2]}</div>
+    </div>`
+}
+function generatedisplay(i){
+    document.querySelector(`.display`).style.display = `flex`
+    if(!displaydisplaying){
+        displaydisplaying = true;
+        gsap.fromTo(document.querySelector(`.display`), {
+            opacity: 0,
+        }, {
+            opacity: 1
+        })
+    }
+    return `
+    <img src="/Media/imagens/${flowerList[i][0]}">
+    <p>${flowerList[i][2]}</p>
+    <h1>R$ ${flowerList[i][1][0]}</h1>
+    <h3>Parcela em x${flowerList[i][1][1]}</h3><hr><br>
+    <button>
+        <span>Colocar no carrinho</span>
+        <svg class="cart-svg" width="55" height="41" viewBox="0 0 55 41" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M4.30762 0.0613978C4.30762 0.102124 4.34654 0.131564 4.38573 0.120476L4.59473 0.0613399C4.71452 0.0274464 4.83913 0.0969569 4.87322 0.216689L12.6197 27.4227C12.8644 28.2822 13.6496 28.875 14.5432 28.875H46.7432C47.7124 28.875 48.498 29.6607 48.498 30.6299C48.498 31.5991 47.7124 32.3848 46.7432 32.3848H10.413C10.3893 32.3848 10.3701 32.3656 10.3701 32.3419C10.3701 32.338 10.3696 32.334 10.3685 32.3302L2.41577 4.40392C2.26507 3.87476 1.78163 3.50977 1.23143 3.50977C0.551329 3.50977 0 2.95844 0 2.27834V1.75488C0 0.785688 0.785688 0 1.75488 0H4.24622C4.28013 0 4.30762 0.0274887 4.30762 0.0613978Z" fill="#D9D9D9"/>
+            <ellipse cx="18" cy="37.5" rx="3" ry="3.5" fill="#D9D9D9"/>
+            <circle cx="40.5" cy="37.5" r="3.5" fill="#D9D9D9"/>
+            <path d="M54.5605 3.94076C54.5605 3.96701 54.5393 3.98828 54.513 3.98828C54.4915 3.98828 54.4727 4.00273 54.4671 4.0235L48.4988 26.2961C48.4983 26.2979 48.498 26.2998 48.498 26.3017C48.498 26.3136 48.4884 26.3232 48.4765 26.3232H15.8121C15.8021 26.3232 15.7939 26.3151 15.7939 26.305C15.7939 26.2931 15.7826 26.2843 15.771 26.2875L15.7492 26.2934C15.7302 26.2986 15.7107 26.2873 15.7056 26.2684L9.73688 3.99033C9.73655 3.98912 9.73546 3.98828 9.73421 3.98828C9.73268 3.98828 9.73145 3.98704 9.73145 3.98552V1.99414C9.73145 0.892807 10.6243 0 11.7256 0H52.5664C53.6677 0 54.5605 0.892807 54.5605 1.99414V3.94076ZM16.1044 3.98828C14.7894 3.98828 13.8322 5.2356 14.1725 6.50583L18.0159 20.8525C18.2502 21.7269 19.0426 22.335 19.9478 22.335H44.2651C45.1703 22.335 45.9627 21.7269 46.197 20.8525L50.0404 6.50582C50.3807 5.2356 49.4235 3.98828 48.1085 3.98828H16.1044Z" fill="#D9D9D9"/>
+        </svg>
+    </button>
+    <div class="exit-display-btn" onclick="disappeardisplay()">
+        ${exitsvgstring}
+    </div>`
+}
+function generateslider(...i){
+    const columncount = gsap.getProperty(":root", "--column-count")
+    return `
+    <div class="slider" data-now="0">
+        <div class="slides">
+            ${i.reduce((acc, ele) => {
+                acc += generatecard(ele)
+                return acc
+            }, [])}
+        </div>
+        <div style="display: none;" class="arrow-btn left" onclick="moveleft(this)"><</div>
+        <div ${columncount >= i.length ? `style="display: none"`: ``} class="arrow-btn right" onclick="moveright(this)">></div>
+    </div>`
+}
+function disappeardisplay(){
+    document.querySelector(`.display`).style.display = `none`
+    displaydisplaying = false
+}
+function display(i){
+    document.querySelector(`.display`).innerHTML = generatedisplay(i)
+    document.querySelector(`.display`).style.display = 'flex'
+}
+function navline(selection){
+    gsap.to(`.nav-line-triangle`, {
+        left: `calc(${selection * 25 + 12.5}% - 98px)`,
+        duration: 0.4
+    })
+    Array.from(document.querySelector(`.cont`).children).forEach((ele, ind) => {
+        if(ind == selection) ele.className = "selected"
+        else ele.className = "unselected"
+    })
+}
+function similarity(a, b) {
+    const fuse = new Fuse([b], { includeScore: true, threshold: 1});
+    if(fuse.search(a).length == 0) return 0
+    else return 1 - fuse.search(a)[0].score
+}
+function moveleft(e){
+    const columncount = gsap.getProperty(":root", "--column-count")
+    const parent = e.parentElement
+    const cont = parent.children[0]
+    const index = Number(parent.dataset.now)
+    if(index != 0){
+        gsap.to(cont, {
+            x: `-${(index - 1) * 100 / columncount}vw`
+        })
+        parent.dataset.now = String(index - 1)
+        parent.children[2].style.display = `flex`
+    }
+    if(index == 1){
+        parent.children[1].style.display = `none`
+    }
+}
+function moveright(e){
+    const columncount = gsap.getProperty(":root", "--column-count")
+    const parent = e.parentElement
+    const cont = parent.children[0]
+    const index = Number(parent.dataset.now)
+    if(index + columncount < cont.children.length){
+        console.log(`movendo`)
+        gsap.to(cont, {
+            x: `-${(index + 1) * 100 / columncount}vw`
+        })
+        parent.dataset.now = String(index + 1)
+        parent.children[1].style.display = `flex`
+    }
+    if(index + columncount + 1 == cont.children.length){
+        parent.children[2].style.display = `none`
+    }
+}
+const mq900 = window.matchMedia("(min-width: 900px)")
+const mq700 = window.matchMedia("(min-width: 700px) and (max-width: 900px)")
+const mqb700 = window.matchMedia("(max-width: 700px)")
+mq900.addEventListener("change", mediaVerifier)
+mq700.addEventListener("change", mediaVerifier)
+mqb700.addEventListener("change", mediaVerifier)
+
+function mediaVerifier(e) {
+    if(e.matches){
+        if(e.media.includes(`and`)){
+            slidersupdate(3)
+        }
+        else if(e.media.includes('9')){
+            slidersupdate(4)
+        }
+        else{
+            slidersupdate(2)
+        }
+    }
+}
+
+function slidersupdate(c){
+    Array.from(document.querySelectorAll(`.slider`)).forEach((ele, ind) => {
+        const columncount = gsap.getProperty(":root", "--column-count")
+        let index = Number(ele.dataset.now)
+        let length = ele.children[0].children.length
+        let min = Math.min(length - c, index)
+        min = Math.max(0, min)
+        gsap.set(ele.children[0], {
+            x: `-${min * 100 / c}vw`
+        })
+        ele.dataset.now = String(min)
+        console.log(min)
+        if(min == 0){
+            ele.children[1].style.display = `none`
+        }
+        else{
+            ele.children[1].style.display = `flex`
+        }
+        if(min + columncount >= length){
+            ele.children[2].style.display = `none`
+        }
+        else{
+            ele.children[2].style.display = `flex`
+        }
+    })
+}
+function searchpiece(){
+    searchFlowerList = flowerList.reduce((acc, ele, ind) => {
+        acc.push([ind, similarity(ele[3], document.querySelector(`.search-text`).value)])
+        return acc
+    }, [])
+    searchFlowerList.sort((a, b) => {
+        return b[1] - a[1]
+    })
+    searchFlowerList = searchFlowerList.map((ele) => {
+        return ele[0]
+    })
+    let resultado = []
+    for(let i = 0; i < searchFlowerList.length; i += 10){
+        resultado.push(searchFlowerList.slice(i, i+10))
+    }
+    document.querySelector(`.sliderlist`).innerHTML = `
+        <h1>PESQUISA</h1>
+        ${resultado.map((ele) => {
+            return generateslider(...ele)
+        })}
+    `
+}
+document.querySelector(`.cont`).addEventListener('click', (e) => e.preventDefault())
+document.querySelector(`.search-text`).addEventListener("input", () => {
+    if(!searchState) return
+    searchpiece()
+})
+document.querySelector(`.search-btn`).addEventListener(`click`, () => {
+    if(!document.querySelector(`.search-text`).value && !searchState) return
+    if(!searchState){
+        searchpiece()
+        document.querySelector(`.search-btn`).innerHTML = searchexitsvgstring
+    }
+    else{
+        document.querySelector(`.sliderlist`).innerHTML = baseSlider
+        document.querySelector(`.search-btn`).innerHTML = searchsvgstring
+    }
+    searchState = searchState ? false: true;
+})
+document.querySelector(`.sliderlist`).innerHTML = baseSlider
+leafloop()
+flowersloop()
+
+// CONSERTAR LÓGICA DE APARIÇÃO    ( check )
+// CAIXA DE SELEÇÃO                ( check )
+// FIGMA ICONS                     ( check )
+// CONSERTAR TRAINGULO DE SELEÇÃO  ( check )
+// CONSERTAR FLOWER                ( check )
+// FAZER GALERIA DE FLORES         ( check )
+// DIMINUIR DISPLAY                ( check )
+// MINIMIZAR CARDS                 ( check ) I
+// ALINHAR E SISTEMA DE PASSAR     ( check ) II
+// BLOCOS DE CATEGORIAS            ( check ) III
     </script>
 </body>
 </html>
